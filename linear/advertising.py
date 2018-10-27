@@ -62,6 +62,7 @@ if __name__ == "__main__":
     print(model)
     print('args :',linreg.coef_, linreg.intercept_)
 
+    # axis=0 列 此处只能为0，默认为0
     order = y_test.argsort(axis=0)
     # 取values之后变为 numpy 的ndarray
     y_test = y_test.values[order]
