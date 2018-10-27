@@ -18,6 +18,9 @@ if __name__ == "__main__":
     mpl.rcParams['axes.unicode_minus'] = False
 
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=1)
+    order = y_test.argsort()
+    x_test = x_test.values[order]
+    y_test = y_test.values[order]
 
     # lambda 超参数
     # np.logspace 创建等比数列 (第四个参数默认base=10)
@@ -40,18 +43,15 @@ if __name__ == "__main__":
         model.fit(x_train, y_train)
         print('超参数: ', model.best_params_)
 
-        order = y_test.argsort()
-        x_test_v = x_test.values[order]
-        y_test_v = y_test.values[order]
-        y_hat = model.predict(x_test_v)
-        print('R2 =',model.score(x_test_v, y_test_v))
+        y_hat = model.predict(x_test)
+        print('R2 =',model.score(x_test, y_test))
         mse = np.average((y_hat - y_test_v) ** 2)
         rmse = np.sqrt(mse)
         print('mse =', mse, 'rmse =', rmse)
 
-        t = np.arange(len(x_test_v))
+        t = np.arange(len(x_test))
         plt.figure()
-        plt.plot(t, y_test_v, 'r-', lw=2, label='real')
+        plt.plot(t, y_test, 'r-', lw=2, label='real')
         plt.plot(t, y_hat, 'g-', lw=2, label='pred')
         plt.title('real & predict', fontsize=18)
         plt.legend(loc='upper left')
