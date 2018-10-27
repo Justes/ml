@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# coding: utf-8
+
 import numpy as np
 import pandas as pd
 import matplotlib as mpl
@@ -42,7 +45,7 @@ if __name__ == "__main__":
         y_test_v = y_test.values[order]
         y_hat = model.predict(x_test_v)
         print('R2 =',model.score(x_test_v, y_test_v))
-        mse = np.average((y_hat - y_test) ** 2)
+        mse = np.average((y_hat - y_test_v) ** 2)
         rmse = np.sqrt(mse)
         print('mse =', mse, 'rmse =', rmse)
 
@@ -50,7 +53,7 @@ if __name__ == "__main__":
         plt.figure()
         plt.plot(t, y_test_v, 'r-', lw=2, label='real')
         plt.plot(t, y_hat, 'g-', lw=2, label='pred')
-        plt.title('predict', fontsize=18)
+        plt.title('real & predict', fontsize=18)
         plt.legend(loc='upper left')
         plt.grid(b=True, ls=':')
         plt.show()
