@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[39]:
+
+
 import numpy as np
 import pandas as pd
 import matplotlib as mpl
@@ -43,8 +49,10 @@ if __name__ == '__main__':
         print(i,data[4] == type)
         data.set_value(data[4] == type, 4, i)
     """
+    # x 从 0 到 3,(4 左开右闭) y 为剩余的
     x, y = np.split(data.values, (4,), axis=1)
     x = x[:, :2]
+    # StandardScaler 数据标准化， 去均值和方差归一化。且是针对每一个特征维度来做的，而不是针对样本
     lr = Pipeline([
         ('sc', StandardScaler()),
         ('poly', PolynomialFeatures(degree=2)),
@@ -56,6 +64,7 @@ if __name__ == '__main__':
     y_hat_prob = lr.predict_proba(x)
     #print('y_hat = \n', y_hat)
     #print('y_hat_prob = \n', y_hat_prob)
+    # %.2f 格式化输出，保留两位小数， %% 转义，输出一个%
     print('准确度: %.2f%%' % (100 * np.mean(y_hat == y.ravel())))
 
     N, M = 500, 500
@@ -65,7 +74,7 @@ if __name__ == '__main__':
     t2 = np.linspace(x2_min, x2_max, M)
     # 造网格
     x1, x2 = np.meshgrid(t1, t2)
-    # 造点, 按列堆叠 flat返回的是一个迭代器，可以用for访问数组每一个元素
+    # 造点,按列堆叠 flat返回的是一个迭代器，可以用for访问数组每一个元素
     x_test = np.stack((x1.flat, x2.flat), axis=1)
 
     """
@@ -83,13 +92,13 @@ if __name__ == '__main__':
 
     plt.figure()
     plt.pcolormesh(x1, x2, y_hat, cmap=cm_light)
-    # c 是为了根据 y的种类绘制不同的颜色
     plt.scatter(x[:, 0], x[:, 1], c=y.ravel(), edgecolors='k', s=50, cmap=cm_dark)
     plt.xlabel('花萼长度', fontsize=14)
     plt.ylabel('花萼宽度', fontsize=14)
     plt.xlim(x1_min, x1_max)
     plt.ylim(x2_min, x2_max)
     plt.grid()
+    # Patch 绘制二维图像
     patches = [  mpatches.Patch(color='#77E0A0', label='Iris-setosa'),
                 mpatches.Patch(color='#FF8080', label='Iris-versicolor'),
                 mpatches.Patch(color='#A0A0FF', label='Iris-virginica')
@@ -97,3 +106,10 @@ if __name__ == '__main__':
     plt.legend(handles=patches, fancybox=True, framealpha=0.8)
     plt.title('鸢尾花Logistic回归分类效果 - 标准化', fontsize=17)
     plt.show()
+
+
+# In[ ]:
+
+
+
+
